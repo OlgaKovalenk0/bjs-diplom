@@ -75,17 +75,19 @@ favoritesWidget.addUserCallback = function (data) {
         if (respons.success) {
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(respons.data);
-            favoritesWidget.updateUsersList(respons.data);
         } else {
             favoritesWidget.setMessage(respons.success, respons.error);
         }
     });
 };
 
-if (respons.success) {
-    favoritesWidget.clearTable();
-    favoritesWidget.fillTable(respons.data);
-    favoritesWidget.updateUsersList(respons.data);
-} else {
-    favoritesWidget.setMessage(respons.success, respons.error);
-}
+favoritesWidget.removeUserCallback = function (data) {
+    ApiConnector.removeUserFromFavorites (data, respons => {
+        if (respons.success) {
+            favoritesWidget.clearTable();
+            favoritesWidget.fillTable(respons.data);
+        } else {
+            favoritesWidget.setMessage(respons.success, respons.error);
+        }
+    });
+};
