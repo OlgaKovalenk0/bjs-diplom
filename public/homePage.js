@@ -13,16 +13,16 @@ logoutButton.action = function () {
     });
 };
 
-ApiConnector.current(respons => {
-    if (respons.success) {
-        ProfileWidget.showProfile(respons.data);
+ApiConnector.current(response => {
+    if (response.success) {
+        ProfileWidget.showProfile(response.data);
     }
 });
 function getExchangeRate() {
-    ApiConnector.getStocks(respons => {
-        if (respons.success) {
+    ApiConnector.getStocks(response => {
+        if (response.success) {
             ratesBoard.clearTable();
-            ratesBoard.fillTable(respons.data);
+            ratesBoard.fillTable(response.data);
         }
     });
 }
@@ -30,64 +30,66 @@ function getExchangeRate() {
 getExchangeRate();
 setInterval(getExchangeRate, 60000);
 moneyManager.addMoneyCallback = function (data) {
-    ApiConnector.addMoney(data, respons => {
-        if (respons.success) {
-            ProfileWidget.showProfile(respons.data);
-            moneyManager.setMessage(respons.success, "Баланс пополнен");
+    ApiConnector.addMoney(data, response => {
+        if (response.success) {
+            ProfileWidget.showProfile(response.data);
+            moneyManager.setMessage(response.success, "Баланс пополнен");
         }
         else {
-            moneyManager.setMessage(respons.success, respons.error);
+            moneyManager.setMessage(response.success, response.error);
         }
     });
 };
 moneyManager.conversionMoneyCallback = function (data) {
-    ApiConnector.convertMoney(data, respons => {
-        if (respons.success) {
-            ProfileWidget.showProfile(respons.data);
-            moneyManager.setMessage(respons.success, "Конвертация валют прошла успешно");
+    ApiConnector.convertMoney(data, response => {
+        if (response.success) {
+            ProfileWidget.showProfile(response.data);
+            moneyManager.setMessage(response.success, "Конвертация валют прошла успешно");
         } else {
-            moneyManager.setMessage(respons.success, respons.error);
+            moneyManager.setMessage(response.success, response.error);
         }
     });
 }
 
 moneyManager.sendMoneyCallback = function (data) {
-    ApiConnector.transferMoney(data, respons => {
-        if (respons.success) {
-            ProfileWidget.showProfile(respons.data);
-            moneyManager.setMessage(respons.success, "Баланс пополнен");
+    ApiConnector.transferMoney(data, response => {
+        if (response.success) {
+            ProfileWidget.showProfile(response.data);
+            moneyManager.setMessage(response.success, "Баланс пополнен");
         }
         else {
-            moneyManager.setMessage(respons.success, respons.error);
+            moneyManager.setMessage(response.success, response.error);
         }
     });
 };
-ApiConnector.getFavorites(respons => {
-    if (respons.success) {
+ApiConnector.getFavorites(response => {
+    if (response.success) {
         favoritesWidget.clearTable();
-        favoritesWidget.fillTable(respons.data);
-        moneyManager.updateUsersList(respons.data);
+        favoritesWidget.fillTable(response.data);
+        moneyManager.updateUsersList(response.data);
     }
 });
 
 favoritesWidget.addUserCallback = function (data) {
-    ApiConnector.addUserToFavorites(data, respons => {
-        if (respons.success) {
+    ApiConnector.addUserToFavorites(data, response => {
+        if (response.success) {
             favoritesWidget.clearTable();
-            favoritesWidget.fillTable(respons.data);
+            favoritesWidget.fillTable(response.data);
+            moneyManager.updateUsersList(response.data);
         } else {
-            favoritesWidget.setMessage(respons.success, respons.error);
+            favoritesWidget.setMessage(response.success, response.error);
         }
     });
 };
 
 favoritesWidget.removeUserCallback = function (data) {
-    ApiConnector.removeUserFromFavorites (data, respons => {
-        if (respons.success) {
+    ApiConnector.removeUserFromFavorites (data, response => {
+        if (response.success) {
             favoritesWidget.clearTable();
-            favoritesWidget.fillTable(respons.data);
+            favoritesWidget.fillTable(response.data);
+            moneyManager.updateUsersList(response.data);
         } else {
-            favoritesWidget.setMessage(respons.success, respons.error);
+            favoritesWidget.setMessage(response.success, response.error);
         }
     });
 };
